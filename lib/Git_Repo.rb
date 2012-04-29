@@ -41,6 +41,10 @@ class Git_Repo
       shell "git status"
     end
 
+    def changes_to_be_committed?
+      status['Changes to be committed']
+    end
+
     def nothing_to_commit?
       !!( status['nothing to commit (working directory clean)'] )
     end
@@ -59,11 +63,11 @@ class Git_Repo
      
     def shell cmd
       val = `cd #{address} && #{cmd} 2>&1`.to_s.strip
-      puts cmd
+      print cmd, "\n"
       if $?.exitstatus != 0
         raise Failed_Shell_Command, "Results:\n#{val}"
       end
-      puts val
+      print val, "\n"
       val
     end 
     
